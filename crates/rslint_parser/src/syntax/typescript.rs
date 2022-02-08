@@ -1,5 +1,6 @@
 //! TypeScript specific functions.
 
+mod classes;
 mod enums;
 mod ts_parse_error;
 mod types;
@@ -14,6 +15,7 @@ use crate::syntax::js_parse_error::{expected_expression, expected_identifier, ex
 use crate::{JsSyntaxKind::*, *};
 use rome_rowan::SyntaxKind;
 
+pub(crate) use self::classes::*;
 pub(crate) use self::enums::*;
 pub(crate) use self::types::*;
 

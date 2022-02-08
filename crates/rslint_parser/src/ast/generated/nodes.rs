@@ -501,23 +501,24 @@ impl JsClassStatement {
     #[doc = r" or a match on [SyntaxNode::kind]"]
     #[inline]
     pub const unsafe fn new_unchecked(syntax: SyntaxNode) -> Self { Self { syntax } }
+    pub fn abstract_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, 0usize) }
     pub fn class_token(&self) -> SyntaxResult<SyntaxToken> {
-        support::required_token(&self.syntax, 0usize)
+        support::required_token(&self.syntax, 1usize)
     }
-    pub fn id(&self) -> SyntaxResult<JsAnyBinding> { support::required_node(&self.syntax, 1usize) }
+    pub fn id(&self) -> SyntaxResult<JsAnyBinding> { support::required_node(&self.syntax, 2usize) }
     pub fn type_parameters(&self) -> Option<TsTypeParameters> {
-        support::node(&self.syntax, 2usize)
+        support::node(&self.syntax, 3usize)
     }
-    pub fn extends_clause(&self) -> Option<JsExtendsClause> { support::node(&self.syntax, 3usize) }
+    pub fn extends_clause(&self) -> Option<JsExtendsClause> { support::node(&self.syntax, 4usize) }
     pub fn implements_clause(&self) -> Option<TsImplementsClause> {
-        support::node(&self.syntax, 4usize)
+        support::node(&self.syntax, 5usize)
     }
     pub fn l_curly_token(&self) -> SyntaxResult<SyntaxToken> {
-        support::required_token(&self.syntax, 5usize)
+        support::required_token(&self.syntax, 6usize)
     }
-    pub fn members(&self) -> JsClassMemberList { support::list(&self.syntax, 6usize) }
+    pub fn members(&self) -> JsClassMemberList { support::list(&self.syntax, 7usize) }
     pub fn r_curly_token(&self) -> SyntaxResult<SyntaxToken> {
-        support::required_token(&self.syntax, 7usize)
+        support::required_token(&self.syntax, 8usize)
     }
 }
 #[derive(Clone, PartialEq, Eq, Hash)]
@@ -5896,6 +5897,10 @@ impl AstNode for JsClassStatement {
 impl std::fmt::Debug for JsClassStatement {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("JsClassStatement")
+            .field(
+                "abstract_token",
+                &support::DebugOptionalElement(self.abstract_token()),
+            )
             .field(
                 "class_token",
                 &support::DebugSyntaxResult(self.class_token()),

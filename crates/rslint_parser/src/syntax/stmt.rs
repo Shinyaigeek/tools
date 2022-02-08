@@ -134,7 +134,7 @@ impl StatementContext {
 ///
 /// If not passed, [STMT_RECOVERY_SET] will be used as recovery set
 pub(crate) fn parse_statement(p: &mut Parser, context: StatementContext) -> ParsedSyntax {
-    match p.cur() {
+    match dbg!(p.cur()) {
         // test_err import_decl_not_top_level
         // {
         //  import foo from "bar";
@@ -200,6 +200,9 @@ pub(crate) fn parse_statement(p: &mut Parser, context: StatementContext) -> Pars
         T![debugger] => parse_debugger_statement(p),
         T![function] => parse_function_statement(p, context),
         T![class] => parse_class_statement(p, context),
+        T![ident] if is_at_ts_abstract_class_statement(p, LineBreak::DoCheck) => {
+            parse_ts_abstract_class_statement(p, context)
+        }
         T![ident] if is_at_async_function(p, LineBreak::DoCheck) => {
             parse_function_statement(p, context)
         }

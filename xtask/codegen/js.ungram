@@ -558,6 +558,7 @@ JsShorthandPropertyObjectMember = name: JsReferenceIdentifier
 ///////////////
 
 JsClassStatement =
+	'abstract'?
 	'class'
 	id: JsAnyBinding
 	type_parameters: TsTypeParameters?
